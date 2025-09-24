@@ -4,6 +4,7 @@ import csv
 from datetime import datetime
 from dotenv import load_dotenv
 load_dotenv()
+import time
 
 
 def run_stock_job():
@@ -18,10 +19,14 @@ def run_stock_job():
     for ticker in data['results']:
         tickers.append(ticker)
 
-    while count < 5 and data.get('next_url'):
+    while data.get('next_url'):
         print(f"Fetching next page:", data['next_url'])
         next_url = data['next_url'] + f"&apiKey={API_KEY}"
         response = requests.get(next_url)
+        if response.status_code != 200:
+            print("Error fetching data:", response.status_code, response.text)
+            time.sleep(60)
+            response = requests.get(next_url)
         data = response.json()
         for ticker in data['results']:
             tickers.append(ticker)

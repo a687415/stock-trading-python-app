@@ -8,7 +8,6 @@ import time
 
 
 def run_stock_job():
-    count = 1
     API_KEY = os.getenv("POLYGON_API_KEY")
     LIMIT = os.getenv("API_PAGINATION_LIMIT")
     tickers = []
@@ -30,7 +29,7 @@ def run_stock_job():
         data = response.json()
         for ticker in data['results']:
             tickers.append(ticker)
-        count += 1
+        
 
     print(len(tickers))
 
